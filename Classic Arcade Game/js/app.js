@@ -18,13 +18,12 @@ class Enemy {
             // I place the enemy a little out of the page so it looks like they are constantly moving not appearing suddenly
             this.x = -100;
         }
-}
+    }
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
-
 
 //Player Class
 
@@ -36,7 +35,7 @@ class Player {
     }
 
     update(dt) {
-   
+
     }
 
     render() {
@@ -61,7 +60,6 @@ class Player {
             this.x = this.x + tileWidth;
         }
     }
-
 }
 
 //new player with just position declared
