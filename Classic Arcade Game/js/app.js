@@ -1,7 +1,6 @@
   const tileWidth = 101;
   const tileHeight = 83;
 
-
 //Enemy Class
 
 class Enemy {
@@ -18,6 +17,7 @@ class Enemy {
             // I place the enemy a little out of the page so it looks like they are constantly moving not appearing suddenly
             this.x = -100;
         }
+
     }
 
     render() {
@@ -85,3 +85,14 @@ document.addEventListener('keyup', function (e) {
     var pressedKeyName = allowedKeys[pressedKey];
     player.handleInput(pressedKeyName);
 });
+
+//Checking if the Player won
+function checkIfPlayerWon() {
+    const gameOverModal = document.querySelector('.gameOverModal-container');
+    if (player.y <= -31) {
+        gameOverModal.style.display = 'block';
+        console.log("I woon");
+        player.x = 303;
+        player.y = 550;     
+    }
+}

@@ -80,6 +80,7 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisions();
+        checkIfPlayerWon();
     }
 
     /* This is called by the update function and loops through all of the
@@ -108,6 +109,17 @@ var Engine = (function(global) {
                 console.log("Collision works")
             }
         });
+    }
+
+    //Checking if the Player won
+    function checkIfPlayerWon() {
+        const gameOverModal = document.querySelector('.gameOverModal-container');
+        if (player.y <= -31) {
+            gameOverModal.style.display = 'block';
+            console.log("I woon");
+            player.x = 303;
+            player.y = 550;
+        }
     }
 
     /* This function initially draws the "game level", it will then call
@@ -177,7 +189,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+   //noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
