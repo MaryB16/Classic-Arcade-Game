@@ -1,6 +1,7 @@
   const tileWidth = 101;
   const tileHeight = 83;
 
+
 //Enemy Class
 
 class Enemy {
@@ -84,15 +85,23 @@ document.addEventListener('keyup', function (e) {
     };
     var pressedKeyName = allowedKeys[pressedKey];
     player.handleInput(pressedKeyName);
+
+    //Start Screen character selection
+    selectCharacter(pressedKeyName);
 });
 
-//Checking if the Player won
-function checkIfPlayerWon() {
-    const gameOverModal = document.querySelector('.gameOverModal-container');
-    if (player.y <= -31) {
-        gameOverModal.style.display = 'block';
-        console.log("I woon");
-        player.x = 303;
-        player.y = 550;     
+function selectCharacter(key) { 
+    let playerSelector = document.querySelector('.playerSelector')
+    const selectorPosition = parseInt(window.getComputedStyle(playerSelector).getPropertyValue('left'))
+    const selectorOffset = 122;
+    
+    if (key === 'left') {
+        if (selectorPosition > 100)
+        playerSelector.style.left = (selectorPosition - 122) + 'px'
+    }
+
+    if (key === 'right') {
+        if (selectorPosition < 500)
+            playerSelector.style.left = (selectorPosition + 122) + 'px'
     }
 }
