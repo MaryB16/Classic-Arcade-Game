@@ -18,12 +18,60 @@ body {
     box-sizing: inherit;
 }
 
-/* Pop-up that appears after the user has finished the game */
+/* Modal that appears on the start of the game */
+.gameStartModal-container {
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background: url('../images/startGame-background.jpg') no-repeat 100% 100%;
+}
+
+.gameStartModal-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    margin: 8% auto;
+    padding: 0;
+    width: 800px;
+    height: 500px;
+    box-shadow: 0 5px 8px rgba(0,0,0,0.2),0 7px 20px rgba(0,0,0,0.17);
+}
+
+.gameStartModal-content > h1 {
+    font-size:2em;
+    color:white;
+    padding-top:5%;
+}
+
+.gameStartModal-content > p {
+    margin: 2% 8%;
+    font-size:1.1em;
+    color:white;
+    line-height: 1.6;
+}
+
+.characterSelect-container {
+    height: 150px;
+    width: 800px;
+    border: solid blue 3px;
+    position: relative;
+}
+
+.playerSprite {
+    position:relative;
+    border:solid green 2px;  
+    z-index:2;
+}
+
+.playerSelector {
+    border: solid red 2px;
+    position:absolute;
+    left:100px;
+}
+
+/* Modal that appears after the user has finished the game */
 .gameOverModal-container {
     display: none;
     position: fixed;
-    top: -100px;
-    left: 0;
     z-index: 1;
     height: 100%;
     width: 100%;
@@ -48,7 +96,7 @@ body {
     line-height: 1.6;
     color: white;
     opacity:0.9;
-    }
+}
 
 .gameOverModal-content footer {
     text-align: center;
