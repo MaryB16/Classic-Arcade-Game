@@ -62,6 +62,8 @@ var Engine = (function(global) {
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
+    
+
     function init() {
         reset();
         lastTime = Date.now();
@@ -203,7 +205,9 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png',
         'images/char-cat-girl.png',
-        'images/char-horn-girl.png'
+        'images/char-horn-girl.png',
+        'images/char-princess-girl.png',
+        'images/char-pink-girl.png',
     ]);
     Resources.onReady(init);
 
