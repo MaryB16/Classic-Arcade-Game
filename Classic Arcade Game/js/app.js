@@ -30,7 +30,7 @@ class Enemy {
 
 class Player {
     constructor(x, y) {
-        this.sprite ='images/char-horn-girl.png';
+        this.sprite = null;
         this.x = x;
         this.y = y;
     }
@@ -40,7 +40,10 @@ class Player {
     }
 
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        //The player sprite will be set during character select
+        if (this.sprite != null) {
+            ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        }
     }
 
     handleInput(key) {
@@ -81,27 +84,60 @@ document.addEventListener('keyup', function (e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        13: 'enter'
+        
     };
     var pressedKeyName = allowedKeys[pressedKey];
-    player.handleInput(pressedKeyName);
 
-    //Start Screen character selection
-    selectCharacter(pressedKeyName);
+    if (player.sprite === null) {
+        handleCharacterSelectInput(pressedKeyName);
+    }
+    else player.handleInput(pressedKeyName);
 });
 
-function selectCharacter(key) { 
-    let playerSelector = document.querySelector('.playerSelector')
-    const selectorPosition = parseInt(window.getComputedStyle(playerSelector).getPropertyValue('left'))
+let characterIncrement = 0;
+
+function handleCharacterSelectInput(key) { 
+    let playerSelector = document.querySelector('.playerSelector');
+    const selectorPosition = parseInt(window.getComputedStyle(playerSelector).getPropertyValue('left'));
     const selectorOffset = 122;
     
     if (key === 'left') {
         if (selectorPosition > 100)
-        playerSelector.style.left = (selectorPosition - 122) + 'px'
+            playerSelector.style.left = (selectorPosition - 122) + 'px';
+
+        if (characterIncrement > 0) {
+            characterIncrement--;
+            console.log(`I have selected the character ${characterIncrement}`)
+        }
     }
 
     if (key === 'right') {
         if (selectorPosition < 500)
-            playerSelector.style.left = (selectorPosition + 122) + 'px'
+            playerSelector.style.left = (selectorPosition + 122) + 'px';
+
+        if (characterIncrement < 4) {
+            characterIncrement++;
+            console.log(`I have selected the character ${characterIncrement}`)
+        }
     }
+
+    if (key === 'enter') {
+        selectCharacter(characterIncrement)
+        hideCharacterSelectionScreen();
+    }
+}
+
+function selectCharacter(whatCharacter) {
+    const playerSprites = document.querySelectorAll('.playerSprite');
+    console.log(playerSprites[whatCharacter])
+    console.log(`I have selected the character ${whatCharacter}`)
+    console.log(playerSprites[whatCharacter].src)
+    player.sprite = playerSprites[whatCharacter].getAttribute('src');
+}
+
+function hideCharacterSelectionScreen() {
+    const gameStartModal = document.querySelector('.gameStartModal-container');
+    gameStartModal.style.display = 'none';
 }
