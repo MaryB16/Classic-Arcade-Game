@@ -52,20 +52,17 @@ body {
 .characterSelect-container {
     height: 150px;
     width: 800px;
-    border: solid blue 3px;
     position: relative;
 }
 
 .playerSprite {
     position:relative;
-    border:solid green 2px;  
     z-index:2;
 }
 
 .playerSelector {
-    border: solid red 2px;
     position:absolute;
-    left:100px;
+    left:116px;
 }
 
 /* Modal that appears after the user has finished the game */

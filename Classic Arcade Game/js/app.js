@@ -101,11 +101,11 @@ let characterIncrement = 0;
 function handleCharacterSelectInput(key) { 
     let playerSelector = document.querySelector('.playerSelector');
     const selectorPosition = parseInt(window.getComputedStyle(playerSelector).getPropertyValue('left'));
-    const selectorOffset = 122;
+    const selectorOffset = 117;
     
     if (key === 'left') {
-        if (selectorPosition > 100)
-            playerSelector.style.left = (selectorPosition - 122) + 'px';
+        if (selectorPosition > 116)
+            playerSelector.style.left = (selectorPosition - selectorOffset) + 'px';
 
         if (characterIncrement > 0) {
             characterIncrement--;
@@ -115,7 +115,7 @@ function handleCharacterSelectInput(key) {
 
     if (key === 'right') {
         if (selectorPosition < 500)
-            playerSelector.style.left = (selectorPosition + 122) + 'px';
+            playerSelector.style.left = (selectorPosition + selectorOffset) + 'px';
 
         if (characterIncrement < 4) {
             characterIncrement++;
