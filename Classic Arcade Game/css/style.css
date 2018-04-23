@@ -20,6 +20,8 @@ body {
 
 /* Modal that appears on the start of the game */
 .gameStartModal-container {
+    /*Testing */
+    display:none;
     position: fixed;
     z-index: 1;
     height: 100%;
