@@ -81,8 +81,9 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisions();
+        checkCollisionsEnemies();
         checkIfPlayerWon();
+        checkEncounterGems();
     }
 
     /* This is called by the update function and loops through all of the
@@ -96,11 +97,16 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        
+        allGems.forEach(function (gem) {
+            gem.update();
+        });
+
         player.update();
     }
 
     //This function checks if each enemy meets the player on x or y axis of the canvas
-    function checkCollisions() {
+    function checkCollisionsEnemies() {
         allEnemies.forEach(function (enemy) {
             if (enemy.x < player.x + 50 &&
                 enemy.x + 50 > player.x &&
@@ -113,10 +119,23 @@ var Engine = (function(global) {
         });
     }
 
+    //This function checks to see if the player has encountered a gem. If the does the gem dissapears and his score is incresed
+
+    function checkEncounterGems() {
+        allGems.forEach(function (gem) {
+            //  basic gem coordinates look like this gem(tileWidth +20, tileHeight +30)
+            // the player coordinates look like this (tileWidth, tileHeight -31)
+            if (player.x == gem.x -20 &&
+                player.y == gem.y - 61) {
+                console.log("Gems encounter works")
+            }
+        });
+    }
+
     //Checking if the Player won
     function checkIfPlayerWon() {
         const gameOverModal = document.querySelector('.gameOverModal-container');
-        if (player.y <= -31) {
+        if (player.y <= -30) {
             gameOverModal.style.display = 'block';
             console.log("I woon");
             player.x = 303;
@@ -181,6 +200,10 @@ var Engine = (function(global) {
          */
         allEnemies.forEach(function(enemy) {
             enemy.render();
+        });
+
+        allGems.forEach(function (gem) {
+            gem.render();
         });
 
         player.render();
