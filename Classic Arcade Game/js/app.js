@@ -32,8 +32,9 @@ class Player {
     constructor(x, y) {
         //the player sprite is fix set for testing purposes
         this.sprite = 'images/char-boy.png';
-        this.x = x;
-        this.y = y;
+        //player starts on the 4th column, last row, with an Y offset of -31 
+        this.x = tileWidth * 3;
+        this.y = tileHeight * 7 - 31;
     }
 
     update(dt) {
@@ -96,8 +97,8 @@ class Gem {
     }
 
 }
-
-let player = new Player(303, 550);
+//Player starts at fix position(303,550)
+let player = new Player();
 //the enemy list
 const enemy1 = new Enemy(0, 63, 200);
 const enemy2 = new Enemy(0, 146, 300);
