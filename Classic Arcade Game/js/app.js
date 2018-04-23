@@ -30,7 +30,8 @@ class Enemy {
 
 class Player {
     constructor(x, y) {
-        this.sprite = null;
+        //the player sprite is fix set for testing purposes
+        this.sprite = 'images/char-boy.png';
         this.x = x;
         this.y = y;
     }
@@ -66,7 +67,36 @@ class Player {
     }
 }
 
-//new player with just position declared
+//Gem class
+
+class Gem {
+    constructor(x, y, width, height) {
+        this.sprite = 'images/Gem Blue.png'
+        // X can only have 7 values (there are 7 tiles/columns in the canvas)
+        // In order for the gem to be in the middle of the tile, the x needs to have an offset of 20
+        //Math.floor(Math.random()*7) gives a number between 0 and 6 
+        // X can have a value according to this formula nr*tileWidth +20
+        this.x = Math.floor(Math.random() * 7) * tileWidth + 20;
+
+        //Y can only have 5 values (5 tiles out of the 8).It starts with the 3 tile and ends with the 7th
+        //In order for the game to be in the middle of the tile it needs an offset of 30
+        //The formula is nr*tileHeight +30. Nr needs to be a number between 1 and 5
+        //Thus  nr = Math.floor(Math.random()*5 +1)
+        this.y = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
+        this.height = 60;
+        this.width = 106;
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y,this.height, this.width);
+    }
+
+    update(dt) {
+
+    }
+
+}
+
 let player = new Player(303, 550);
 //the enemy list
 const enemy1 = new Enemy(0, 63, 200);
@@ -75,8 +105,10 @@ const enemy3 = new Enemy(0, 229, 150);
 const enemy4 = new Enemy(0, 312, 200);
 const enemy5 = new Enemy(0, 395, 240);
 
-let allEnemies = [enemy1, enemy2, enemy3, enemy4,enemy5];
+let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
+const gem1 = new Gem();
 
+let allGems = [gem1];
 //Listens for key pressed and sends them to player.handleInput method
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.keyCode;
