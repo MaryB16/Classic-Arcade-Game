@@ -29,7 +29,7 @@ class Enemy {
 //Player Class
 
 class Player {
-    constructor(x, y) {
+    constructor(sprite, x, y) {
         //the player sprite is fix set for testing purposes
         this.sprite = 'images/char-boy.png';
         //player starts on the 4th column, last row, with an Y offset of -31 
@@ -71,8 +71,8 @@ class Player {
 //Gem class
 
 class Gem {
-    constructor(x, y, width, height) {
-        this.sprite = 'images/Gem Blue.png'
+    constructor(sprite, x, y, width, height) {
+        this.sprite = sprite;
         // X can only have 7 values (there are 7 tiles/columns in the canvas)
         // In order for the gem to be in the middle of the tile, the x needs to have an offset of 20
         //Math.floor(Math.random()*7) gives a number between 0 and 6 
@@ -107,9 +107,11 @@ const enemy4 = new Enemy(0, 312, 200);
 const enemy5 = new Enemy(0, 395, 240);
 
 let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
-const gem1 = new Gem();
+const gem1 = new Gem('images/Gem Blue.png');
+const gem2 = new Gem('images/Gem Green.png');
+const gem3 = new Gem('images/Gem Orange.png');
 
-let allGems = [gem1];
+let allGems = [gem1, gem2, gem3];
 //Listens for key pressed and sends them to player.handleInput method
 document.addEventListener('keyup', function (e) {
     var pressedKey = e.keyCode;
