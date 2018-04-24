@@ -84,6 +84,7 @@ var Engine = (function(global) {
         checkCollisionsEnemies();
         checkIfPlayerWon();
         checkEncounterGems();
+        checkIfPlayerReachedWater();
     }
 
     /* This is called by the update function and loops through all of the
@@ -112,9 +113,11 @@ var Engine = (function(global) {
                 enemy.x + 50 > player.x &&
                 enemy.y < player.y + 50 &&
                 enemy.y + 50 > player.y) {
-                player.x = 303;
-                player.y = 550;
+                player.setInitialPosition();
                 console.log("Collision works")
+                if (lifeNumber > 0) {
+                    player.looseLife();
+                }
             }
         });
     }
@@ -134,21 +137,26 @@ var Engine = (function(global) {
                 console.log("Gems encounter works")
                 player.collectGem(gem.value);
                 console.log(`Player score is ${player.score}`) 
-                let scorePoints = document.querySelector('.scorePoints');
+                let scorePoints = document.querySelector('#scorePoints');
                 scorePoints.innerHTML = player.score;
             }
         });
     }
 
+    function checkIfPlayerReachedWater() {
+        if (player.y <= -30) {
+            player.setInitialPosition();
+            console.log("I have reached Water")
+            if (lifeNumber > 0) {
+                player.looseLife();
+            }
+        }
+    }
+
+
     //Checking if the Player won
     function checkIfPlayerWon() {
-        const gameOverModal = document.querySelector('.gameOverModal-container');
-        if (player.y <= -30) {
-            gameOverModal.style.display = 'block';
-            console.log("I woon");
-            player.x = 303;
-            player.y = 550;
-        }
+        //const gameOverModal = document.querySelector('.gameOverModal-container');
     }
 
     /* This function initially draws the "game level", it will then call

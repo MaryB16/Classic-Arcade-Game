@@ -1,6 +1,7 @@
   const tileWidth = 101;
   const tileHeight = 83;
-
+  let playerLives = document.querySelectorAll('.lives')
+  let lifeNumber = 3;
 
 //Enemy Class
 
@@ -42,6 +43,16 @@ class Player {
         this.score = this.score + gemValue;
     }
 
+    looseLife() {
+        //array index starts at 0
+        playerLives[lifeNumber-1].style.display = 'none';
+        lifeNumber--;
+    }
+
+    setInitialPosition() {
+        this.x = 303;
+        this.y = 550;
+    }
     update(dt) {
 
     }
