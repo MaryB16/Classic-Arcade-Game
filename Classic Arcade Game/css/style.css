@@ -18,6 +18,14 @@ body {
     box-sizing: inherit;
 }
 
+.score {
+    position:absolute;
+    right:40%;
+    top:3%;
+
+}
+
+
 /* Modal that appears on the start of the game */
 .gameStartModal-container {
     /*Testing */
