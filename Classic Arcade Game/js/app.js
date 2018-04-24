@@ -95,17 +95,26 @@ class Gem {
         // In order for the gem to be in the middle of the tile, the x needs to have an offset of 20
         //Math.floor(Math.random()*7) gives a number between 0 and 6 
         // X can have a value according to this formula nr*tileWidth +20
-        this.x = Math.floor(Math.random() * 7) * tileWidth + 20;
-
+        const randomizeX = Math.floor(Math.random() * 7) * tileWidth + 20;
+        this.x = randomizeX;
+   
         //Y can only have 5 values (5 tiles out of the 8).It starts with the 3 tile and ends with the 7th
         //In order for the game to be in the middle of the tile it needs an offset of 30
         //The formula is nr*tileHeight +30. Nr needs to be a number between 1 and 5
         //Thus  nr = Math.floor(Math.random()*5 +1)
-        this.y = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
-        
+        const randomizeY = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
+        this.y = randomizeY;
         this.height = 60;
         this.width = 106;
     }
+
+    changePosition() {
+        const randomizeX = Math.floor(Math.random() * 7) * tileWidth + 20;
+        const randomizeY = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
+        this.x = randomizeX;
+        this.y = randomizeY;
+    }
+
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y,this.height, this.width);

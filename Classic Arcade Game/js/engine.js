@@ -135,10 +135,7 @@ var Engine = (function(global) {
             // the player coordinates look like this (tileWidth, tileHeight -31)
             if (player.x == gem.x -20 &&
                 player.y == gem.y - 61) {
-                let randomizeX = Math.floor(Math.random() * 7) * tileWidth + 20;
-                let randomizeY = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
-                gem.x = randomizeX;
-                gem.y = randomizeY;
+                gem.changePosition();
                 console.log("Gems encounter works")
                 player.collectGem(gem.value);
                 console.log(`Player score is ${player.score}`) 
