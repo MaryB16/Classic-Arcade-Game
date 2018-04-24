@@ -18,13 +18,19 @@ body {
     box-sizing: inherit;
 }
 
-.score {
-    position:absolute;
-    right:40%;
-    top:3%;
+/*Game features: Score & Lives*/
+.game-features {
+    width:650px;
+    margin-bottom:-50px;
+    margin-left:33%;
+    display:flex;
+    justify-content:space-between;
 
 }
 
+.player-lives img {
+    width: 30px;
+}
 
 /* Modal that appears on the start of the game */
 .gameStartModal-container {
