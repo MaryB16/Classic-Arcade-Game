@@ -1,7 +1,7 @@
   const tileWidth = 101;
   const tileHeight = 83;
   let playerLives = document.querySelectorAll('.lives')
-  let lifeNumber = 3;
+//TO DO: make life property of player
 
 //Enemy Class
 
@@ -30,23 +30,24 @@ class Enemy {
 //Player Class
 
 class Player {
-    constructor(sprite, x, y, score) {
+    constructor(sprite, x, y,lives, score) {
         //the player sprite is fix set for testing purposes
         this.sprite = 'images/char-boy.png';
         //player starts on the 4th column, 7th row, with an Y offset of -31 
         this.x = tileWidth * 3;
         this.y = tileHeight * 7 - 31;
         this.score = 0;
+        this.lives = 3;
     }
 
     collectGem(gemValue) {
         this.score = this.score + gemValue;
     }
 
-    looseLife() {
+    losesLife() {
         //array index starts at 0
-        playerLives[lifeNumber-1].style.display = 'none';
-        lifeNumber--;
+        playerLives[this.lives-1].style.display = 'none';
+        this.lives--;
     }
 
     setInitialPosition() {

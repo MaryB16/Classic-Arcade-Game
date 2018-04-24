@@ -115,8 +115,13 @@ var Engine = (function(global) {
                 enemy.y + 50 > player.y) {
                 player.setInitialPosition();
                 console.log("Collision works")
-                if (lifeNumber > 0) {
-                    player.looseLife();
+
+                if (player.lives > 0) {
+                    player.losesLife();
+                }
+
+                if (player.lives === 0) {
+                    playerLosesGame();
                 }
             }
         });
@@ -147,8 +152,11 @@ var Engine = (function(global) {
         if (player.y <= -30) {
             player.setInitialPosition();
             console.log("I have reached Water")
-            if (lifeNumber > 0) {
-                player.looseLife();
+            if (player.lives > 0) {
+                player.losesLife();
+            }
+            if (player.lives === 0) {
+                playerLosesGame();
             }
         }
     }
@@ -157,6 +165,10 @@ var Engine = (function(global) {
     //Checking if the Player won
     function checkIfPlayerWon() {
         //const gameOverModal = document.querySelector('.gameOverModal-container');
+    }
+
+    function playerLosesGame() {
+            console.log("I LOOST")
     }
 
     /* This function initially draws the "game level", it will then call
