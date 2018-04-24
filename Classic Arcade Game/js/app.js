@@ -29,12 +29,17 @@ class Enemy {
 //Player Class
 
 class Player {
-    constructor(sprite, x, y) {
+    constructor(sprite, x, y, score) {
         //the player sprite is fix set for testing purposes
         this.sprite = 'images/char-boy.png';
-        //player starts on the 4th column, last row, with an Y offset of -31 
+        //player starts on the 4th column, 7th row, with an Y offset of -31 
         this.x = tileWidth * 3;
         this.y = tileHeight * 7 - 31;
+        this.score = 0;
+    }
+
+    collectGem(gemValue) {
+        this.score = this.score + gemValue;
     }
 
     update(dt) {
@@ -71,8 +76,9 @@ class Player {
 //Gem class
 
 class Gem {
-    constructor(sprite, x, y, width, height) {
+    constructor(sprite, value, x, y, width, height) {
         this.sprite = sprite;
+        this.value = value;
         // X can only have 7 values (there are 7 tiles/columns in the canvas)
         // In order for the gem to be in the middle of the tile, the x needs to have an offset of 20
         //Math.floor(Math.random()*7) gives a number between 0 and 6 
@@ -84,6 +90,7 @@ class Gem {
         //The formula is nr*tileHeight +30. Nr needs to be a number between 1 and 5
         //Thus  nr = Math.floor(Math.random()*5 +1)
         this.y = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
+        
         this.height = 60;
         this.width = 106;
     }
@@ -95,7 +102,6 @@ class Gem {
     update(dt) {
 
     }
-
 }
 //Player starts at fix position(303,550)
 let player = new Player();
@@ -107,9 +113,10 @@ const enemy4 = new Enemy(0, 312, 200);
 const enemy5 = new Enemy(0, 395, 240);
 
 let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
-const gem1 = new Gem('images/Gem Blue.png');
-const gem2 = new Gem('images/Gem Green.png');
-const gem3 = new Gem('images/Gem Orange.png');
+
+let gem1 = new Gem('images/Gem Blue.png', 50);
+const gem2 = new Gem('images/Gem Green.png', 100);
+const gem3 = new Gem('images/Gem Orange.png', 150);
 
 let allGems = [gem1, gem2, gem3];
 //Listens for key pressed and sends them to player.handleInput method
