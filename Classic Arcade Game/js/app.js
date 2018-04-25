@@ -1,7 +1,7 @@
   const tileWidth = 101;
   const tileHeight = 83;
-  let playerLives = document.querySelectorAll('.lives')
-//TO DO: make life property of player
+  let playerLives = document.querySelectorAll('.lives');
+  const replayButton = document.querySelector('.button');
 
 //Enemy Class
 
@@ -46,7 +46,7 @@ class Player {
 
     losesLife() {
         //array index starts at 0
-        playerLives[this.lives-1].style.display = 'none';
+        playerLives[this.lives-1].style.visibility = 'hidden';
         this.lives--;
     }
 
