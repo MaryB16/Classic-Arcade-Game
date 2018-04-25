@@ -126,12 +126,32 @@ var Engine = (function(global) {
         });
     }
 
+    function resetGame() {
+        player.lives = 3;
+        player.score = 0;
+        player.sprite =
+        playerLives.forEach(function (life) {
+            life.style.visibility = 'visible';
+        });
+        let scorePoints = document.querySelector('#scorePoints');
+        scorePoints.innerHTML = player.score;
+        selectCharacter(characterIncrement);
+    }
+
+    replayButton.addEventListener('click', function () {
+        const gameOverModal = document.querySelector('.gameOverModal-container');
+        gameOverModal.style.display = 'none';
+        resetGame();
+
+    })
 
     function showModal(message) {
         const gameOverModal = document.querySelector('.gameOverModal-container');
         const gameOverContent = document.querySelector('.gameOverModal-content');
         gameOverContent.firstElementChild.innerHTML = message;
         gameOverModal.style.display = 'block';
+        player.sprite = null;
+        
 
     }
  
