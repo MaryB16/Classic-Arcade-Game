@@ -8,7 +8,7 @@ This project is similar to the classic arcade game Frogger. The rules are simple
 * The player gathers gems for points, he wins the game once he has gathered enough gems.
 
 ## How to run the game
-This project was written  in Visual Studio IDE and uploading it to github also added some extra files. These files are **not needed**  to run the project/modify it. 
+This project was written in Visual Studio IDE and contains some extra files. These files are **not needed**  to run the project or modify it. 
 In order to run the project all you need are the *following files*:
 - `index.html`
 - `css` folder (which includes style.css)
