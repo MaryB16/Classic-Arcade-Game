@@ -82,7 +82,6 @@ var Engine = (function(global) {
     function update(dt) {
         updateEntities(dt);
         checkCollisionsEnemies();
-        checkIfPlayerWon();
         checkEncounterGems();
         checkIfPlayerReachedWater();
     }
@@ -121,26 +120,42 @@ var Engine = (function(global) {
                 }
 
                 if (player.lives === 0) {
-                    playerLosesGame();
+                    showModal('Oh no :( You lost all your lives!');
                 }
             }
         });
     }
 
-    //This function checks to see if the player has encountered a gem. If the does the gem dissapears and his score is incresed
 
+    function showModal(message) {
+        const gameOverModal = document.querySelector('.gameOverModal-container');
+        const gameOverContent = document.querySelector('.gameOverModal-content');
+        gameOverContent.firstElementChild.innerHTML = message;
+        gameOverModal.style.display = 'block';
+
+    }
+ 
+    function updateScore() {
+        console.log(`Player score is ${player.score}`)
+        let scorePoints = document.querySelector('#scorePoints');
+        scorePoints.innerHTML = player.score;
+        //TODO Find a better place to showModal and change The score needed
+        if (player.score >= 100) {
+            showModal('Congratulations, you won!!');
+        }
+
+    }
+
+    //This function checks to see if the player has encountered a gem. If the does the gem dissapears and his score is incresed
     function checkEncounterGems() {
         allGems.forEach(function (gem) {
             //  basic gem coordinates look like this gem(tileWidth +20, tileHeight +30)
             // the player coordinates look like this (tileWidth, tileHeight -31)
-            if (player.x == gem.x -20 &&
+            if (player.x == gem.x - 20 &&
                 player.y == gem.y - 61) {
-                gem.changePosition();
-                console.log("Gems encounter works")
                 player.collectGem(gem.value);
-                console.log(`Player score is ${player.score}`) 
-                let scorePoints = document.querySelector('#scorePoints');
-                scorePoints.innerHTML = player.score;
+                gem.changePosition();
+                updateScore();
             }
         });
     }
@@ -148,24 +163,15 @@ var Engine = (function(global) {
     function checkIfPlayerReachedWater() {
         if (player.y <= -30) {
             player.setInitialPosition();
-            console.log("I have reached Water")
+            console.log("I have reached Water");
             if (player.lives > 0) {
                 player.losesLife();
             }
             if (player.lives === 0) {
-                playerLosesGame();
+                showModal('Oh no :( You lost all your lives!');
+
             }
         }
-    }
-
-
-    //Checking if the Player won
-    function checkIfPlayerWon() {
-        //const gameOverModal = document.querySelector('.gameOverModal-container');
-    }
-
-    function playerLosesGame() {
-            console.log("I LOOST")
     }
 
     /* This function initially draws the "game level", it will then call
