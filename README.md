@@ -10,7 +10,7 @@ This project is similar to the classic arcade game Frogger. The rules are simple
 ## How to run the game
 
 * **Download** or clone the repository. Inside you will find a folder called "Classic Arcade Game". Inside this folder you will find `index.html`. Open it with Chrome to run the game. 
-
+You can also preview the game [here](http://htmlpreview.github.io/?https://github.com/MaryB16/Classic-Arcade-Game/blob/master/Classic%20Arcade%20Game/index.html)
 
 This project was written in Visual Studio IDE and contains some extra files. These files are **not needed**  to run the project or modify it. 
 In order to run the project all you need are the *following files*:
