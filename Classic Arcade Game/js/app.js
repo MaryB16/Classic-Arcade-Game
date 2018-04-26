@@ -1,206 +1,234 @@
-  const tileWidth = 101;
-  const tileHeight = 83;
-  let playerLives = document.querySelectorAll('.lives');
-  const replayButton = document.querySelector('.button');
+const ENEMY_END_POSITION = 707;
+const ENEMY_START_POSITION = -100;
 
-//Enemy Class
-
+/**
+ * Represents an enemy entity on the screen.
+ */
 class Enemy {
-    constructor(x, y,speed) {
+    /**
+     * Creates a new instance of an enemy.
+     * @param {Number} x The X position of the enemy
+     * @param {Number} y The Y position of the enemy
+     * @param {Number} speed The speed of the enemy (150 is a slow enemy, 300 is a fast enemy)
+     */
+    constructor(x, y, speed) {
         this.sprite = 'images/enemy-bug.png';
         this.x = x;
         this.y = y;
         this.speed = speed;
     }
 
+    /**
+     * Moves the position of the enemy to the right proportional to its speed.
+     * @param {Number} dt
+     */
     update(dt) {
         this.x += this.speed * dt;
-        if (this.x > 707) {
-            // I place the enemy a little out of the page so it looks like they are constantly moving not appearing suddenly
-            this.x = -100;
+        // Reset the position of the enemy when it goes off-canvas
+        if (this.x > ENEMY_END_POSITION) {
+            this.x = ENEMY_START_POSITION;
         }
-
     }
 
+    /**
+     * Draws the enemy on screen
+     */
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
 
-//Player Class
+// Players start on the 4th column, 7th row, with an Y offset of -31 
+const PLAYER_START_X_TILE = 3;
+const PLAYER_START_Y_TILE = 7;
 
+/**
+ * Represents a player character entity on screen.
+ */
 class Player {
-    constructor(sprite, x, y,lives, score) {
-        //the player sprite is fix set for testing purposes
-        this.sprite = 'images/char-boy.png';
-        //player starts on the 4th column, 7th row, with an Y offset of -31 
-        this.x = tileWidth * 3;
-        this.y = tileHeight * 7 - 31;
+    /**
+     * Creates a new instance of a player.
+     */
+    constructor() {
+        this.sprite = null;
         this.score = 0;
         this.lives = 3;
+        this.setInitialPosition();
     }
 
-    collectGem(gemValue) {
-        this.score = this.score + gemValue;
+    /**
+     * Collects the points for the given gem.
+     * @param {Gem} gem
+     */
+    collectGem(gem) {
+        this.score = this.score + gem.value;
     }
 
-    losesLife() {
-        //array index starts at 0
-        playerLives[this.lives-1].style.visibility = 'hidden';
+    /**
+     * Removes one life point from the player.
+     */
+    deductLife() {
+        playerLives[this.lives - 1].style.visibility = 'hidden';
         this.lives--;
     }
 
     setInitialPosition() {
-        this.x = 303;
-        this.y = 550;
+        this.x = TILE_WIDTH * PLAYER_START_X_TILE;
+        this.y = TILE_HEIGHT * PLAYER_START_Y_TILE - 31;
     }
-    update(dt) {
 
+    update(dt) {
     }
 
     render() {
-        //The player sprite will be set during character select
+        // The player sprite will be set during character select
         if (this.sprite != null) {
             ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
         }
     }
 
     handleInput(key) {
-        console.log(`I has the player pressed this key: ${key} and is at Y: ${this.y} and X: ${this.x}`)
-       //I check to make sure the player isn't at the edge of the screen
+        // The player is considered dead when he has no sprite
+        // This prevents the player from moving around with no sprite
+        if (this.sprite === null)
+            return;
+
+        // Check screen boundries before moving
         if (key === 'up' && this.y > 0) {
-            this.y = this.y - tileHeight;
+            this.y -= TILE_HEIGHT;
         }
-        else if (key === 'down' && this. y < 550) {
-            this.y = this.y + tileHeight;
+        else if (key === 'down' &&
+            this.y < TILE_HEIGHT * PLAYER_START_Y_TILE - 31) {
+            this.y += TILE_HEIGHT;
         }
-
         else if (key === 'left' && this.x > 0) {
-            this.x = this.x - tileWidth;
+            this.x -= TILE_WIDTH;
         }
-
-        else if (key === 'right' && this. x < 550) {
-            this.x = this.x + tileWidth;
+        else if (key === 'right' &&
+            this.x < TILE_WIDTH * 6) {
+            this.x += TILE_WIDTH;
         }
     }
 }
 
-//Gem class
+const GEM_HEIGHT = 60;
+const GEM_WIDTH = 106;
 
+/**
+ * Represents a gem entity on screen.
+ */
 class Gem {
-    constructor(sprite, value, x, y, width, height) {
+    constructor(sprite, value) {
         this.sprite = sprite;
         this.value = value;
-        // X can only have 7 values (there are 7 tiles/columns in the canvas)
-        // In order for the gem to be in the middle of the tile, the x needs to have an offset of 20
-        //Math.floor(Math.random()*7) gives a number between 0 and 6 
-        // X can have a value according to this formula nr*tileWidth +20
-        const randomizeX = Math.floor(Math.random() * 7) * tileWidth + 20;
-        this.x = randomizeX;
-   
-        //Y can only have 5 values (5 tiles out of the 8).It starts with the 3 tile and ends with the 7th
-        //In order for the game to be in the middle of the tile it needs an offset of 30
-        //The formula is nr*tileHeight +30. Nr needs to be a number between 1 and 5
-        //Thus  nr = Math.floor(Math.random()*5 +1)
-        const randomizeY = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
-        this.y = randomizeY;
-        this.height = 60;
-        this.width = 106;
+        this.height = GEM_HEIGHT;
+        this.width = GEM_WIDTH;
+        this.changePosition();
     }
 
+    /**
+     * Randomizes the position of the gem.
+     *
+     * Gems can only be positioned on between the 3rd and 7th tile vertically.
+     * Gems have a 20px horizontal offset and a 30px vertical offset in their tile.
+     */
     changePosition() {
-        const randomizeX = Math.floor(Math.random() * 7) * tileWidth + 20;
-        const randomizeY = (Math.floor(Math.random() * 5 + 1)) * tileHeight + 30;
-        this.x = randomizeX;
-        this.y = randomizeY;
+        this.x = Math.floor(Math.random() * 7) * TILE_WIDTH + 20;
+        this.y = (Math.floor(Math.random() * 5 + 1)) * TILE_HEIGHT + 30;
     }
-
 
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y,this.height, this.width);
     }
 
     update(dt) {
-
     }
 }
-//Player starts at fix position(303,550)
-let player = new Player();
-//the enemy list
-const enemy1 = new Enemy(0, 63, 200);
-const enemy2 = new Enemy(0, 146, 300);
-const enemy3 = new Enemy(0, 229, 150);
-const enemy4 = new Enemy(0, 312, 200);
-const enemy5 = new Enemy(0, 395, 240);
 
-let allEnemies = [enemy1, enemy2, enemy3, enemy4, enemy5];
+const TILE_WIDTH = 101;
+const TILE_HEIGHT = 83;
 
-let gem1 = new Gem('images/Gem Blue.png', 50);
-const gem2 = new Gem('images/Gem Green.png', 100);
-const gem3 = new Gem('images/Gem Orange.png', 150);
+const playerLives = document.querySelectorAll('.lives');
+const playerSelector = document.querySelector('.player-selector');
 
-let allGems = [gem1, gem2, gem3];
-//Listens for key pressed and sends them to player.handleInput method
+const player = new Player();
+
+const allEnemies = [
+    new Enemy(0, 63, 200),
+    new Enemy(0, 146, 300),
+    new Enemy(0, 229, 150),
+    new Enemy(0, 312, 200),
+    new Enemy(0, 395, 250)
+];
+
+const allGems = [
+    new Gem('images/Gem Blue.png', 50),
+    new Gem('images/Gem Green.png', 100),
+    new Gem('images/Gem Orange.png', 150)
+];
+
+const allowedKeys = {
+    37: 'left',
+    38: 'up',
+    39: 'right',
+    40: 'down',
+    13: 'enter'
+};
+let gameStarted = false;
+
+// Listens for key presses and forwards them to the player or character selector
 document.addEventListener('keyup', function (e) {
-    var pressedKey = e.keyCode;
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down',
-        13: 'enter'
-        
-    };
-    var pressedKeyName = allowedKeys[pressedKey];
+    const pressedKeyName = allowedKeys[e.keyCode];
 
-    if (player.sprite === null) {
+    if (gameStarted === false)
         handleCharacterSelectInput(pressedKeyName);
-    }
-    else player.handleInput(pressedKeyName);
+    else
+        player.handleInput(pressedKeyName);
 });
 
-let characterIncrement = 0;
+const SELECTOR_OFFSET = 117;
+const CHARACTER_SELECTOR_START = 116;
+const CHARACTER_SELECTOR_END = 500;
+let selectedCharacterIndex = 0;
 
-function handleCharacterSelectInput(key) { 
-    let playerSelector = document.querySelector('.playerSelector');
+/**
+ * Moves the character selection indicator and selects the character based on user input.
+ * @param {String} key The key that was pressed
+ */
+function handleCharacterSelectInput(key) {
     const selectorPosition = parseInt(window.getComputedStyle(playerSelector).getPropertyValue('left'));
-    const selectorOffset = 117;
-    
-    if (key === 'left') {
-        if (selectorPosition > 116)
-            playerSelector.style.left = (selectorPosition - selectorOffset) + 'px';
 
-        if (characterIncrement > 0) {
-            characterIncrement--;
-            console.log(`I have selected the character ${characterIncrement}`)
+    if (key === 'left') {
+        if (selectorPosition > CHARACTER_SELECTOR_START) {
+            selectedCharacterIndex--;
+            playerSelector.style.left = (selectorPosition - SELECTOR_OFFSET) + 'px';
         }
     }
 
     if (key === 'right') {
-        if (selectorPosition < 500)
-            playerSelector.style.left = (selectorPosition + selectorOffset) + 'px';
-
-        if (characterIncrement < 4) {
-            characterIncrement++;
-            console.log(`I have selected the character ${characterIncrement}`)
+        if (selectorPosition < CHARACTER_SELECTOR_END) {
+            selectedCharacterIndex++;
+            playerSelector.style.left = (selectorPosition + SELECTOR_OFFSET) + 'px';
         }
     }
 
     if (key === 'enter') {
-        selectCharacter(characterIncrement)
+        selectCharacter(selectedCharacterIndex)
         hideCharacterSelectionScreen();
+        gameStarted = true;
     }
 }
 
+/**
+ * Sets the sprite of the player equal to that of the selected character.
+ * @param {any} whatCharacter
+ */
 function selectCharacter(whatCharacter) {
-    const playerSprites = document.querySelectorAll('.playerSprite');
-    console.log(playerSprites[whatCharacter])
-    console.log(`I have selected the character ${whatCharacter}`)
-    console.log(playerSprites[whatCharacter].src)
+    const playerSprites = document.querySelectorAll('.player-sprite');
     player.sprite = playerSprites[whatCharacter].getAttribute('src');
 }
 
 function hideCharacterSelectionScreen() {
-    const gameStartModal = document.querySelector('.gameStartModal-container');
+    const gameStartModal = document.querySelector('.game-start-modal-container');
     gameStartModal.style.display = 'none';
 }

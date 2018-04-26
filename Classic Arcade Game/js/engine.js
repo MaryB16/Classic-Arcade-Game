@@ -62,10 +62,7 @@ var Engine = (function(global) {
      * particularly setting the lastTime variable that is required for the
      * game loop.
      */
-    
-
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -81,8 +78,8 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        checkCollisionsEnemies();
-        checkEncounterGems();
+        checkEnemyCollisions();
+        checkCollectableGems();
         checkIfPlayerReachedWater();
     }
 
@@ -105,75 +102,34 @@ var Engine = (function(global) {
         player.update();
     }
 
-    //This function checks if each enemy meets the player on x or y axis of the canvas
-    function checkCollisionsEnemies() {
+    /**
+     * Checks if any enemy collided with the player.
+     */
+    function checkEnemyCollisions() {
+        const COLLISION_OFFSET = 50;
         allEnemies.forEach(function (enemy) {
-            if (enemy.x < player.x + 50 &&
-                enemy.x + 50 > player.x &&
-                enemy.y < player.y + 50 &&
-                enemy.y + 50 > player.y) {
-                player.setInitialPosition();
-                console.log("Collision works")
+            if (enemy.x < player.x + COLLISION_OFFSET &&
+                enemy.x + COLLISION_OFFSET > player.x &&
+                enemy.y < player.y + COLLISION_OFFSET &&
+                enemy.y + COLLISION_OFFSET > player.y) {
 
-                if (player.lives > 0) {
-                    player.losesLife();
-                }
-
-                if (player.lives === 0) {
-                    showModal('Oh no :( You lost all your lives!');
-                }
+                handlePlayerDeath();
             }
         });
     }
 
-    function resetGame() {
-        player.lives = 3;
-        player.score = 0;
-        player.sprite =
-        playerLives.forEach(function (life) {
-            life.style.visibility = 'visible';
-        });
-        let scorePoints = document.querySelector('#scorePoints');
-        scorePoints.innerHTML = player.score;
-        selectCharacter(characterIncrement);
-    }
-
-    replayButton.addEventListener('click', function () {
-        const gameOverModal = document.querySelector('.gameOverModal-container');
-        gameOverModal.style.display = 'none';
-        resetGame();
-
-    })
-
-    function showModal(message) {
-        const gameOverModal = document.querySelector('.gameOverModal-container');
-        const gameOverContent = document.querySelector('.gameOverModal-content');
-        gameOverContent.firstElementChild.innerHTML = message;
-        gameOverModal.style.display = 'block';
-        player.sprite = null;
-        
-
-    }
- 
-    function updateScore() {
-        console.log(`Player score is ${player.score}`)
-        let scorePoints = document.querySelector('#scorePoints');
-        scorePoints.innerHTML = player.score;
-        //TODO Find a better place to showModal and change The score needed
-        if (player.score >= 100) {
-            showModal('Congratulations, you won!!');
-        }
-
-    }
-
-    //This function checks to see if the player has encountered a gem. If the does the gem dissapears and his score is incresed
-    function checkEncounterGems() {
+    /**
+     * Checks if the player has encountered a gem.
+     * If so the gem dissapears and the player's score is increased.
+     */
+    function checkCollectableGems() {
         allGems.forEach(function (gem) {
-            //  basic gem coordinates look like this gem(tileWidth +20, tileHeight +30)
-            // the player coordinates look like this (tileWidth, tileHeight -31)
-            if (player.x == gem.x - 20 &&
-                player.y == gem.y - 61) {
-                player.collectGem(gem.value);
+            // Basic gem coordinates look like this gem(TILE_WIDTH + 20, TILE_HEIGHT + 30)
+            // Player coordinates look like this (TILE_WIDTH, TILE_HEIGHT - 31)
+            // Substracting both offsets from the gem coordinate will result in a position
+            // similar to a player
+            if (player.x == gem.x - 20 && player.y == gem.y - 61) {
+                player.collectGem(gem);
                 gem.changePosition();
                 updateScore();
             }
@@ -181,18 +137,58 @@ var Engine = (function(global) {
     }
 
     function checkIfPlayerReachedWater() {
-        if (player.y <= -30) {
-            player.setInitialPosition();
-            console.log("I have reached Water");
-            if (player.lives > 0) {
-                player.losesLife();
-            }
-            if (player.lives === 0) {
-                showModal('Oh no :( You lost all your lives!');
+        const WATER_TILE_OFFSET = -30;
+        if (player.y <= WATER_TILE_OFFSET)
+            handlePlayerDeath();
+    }
 
-            }
+    /**
+     * Substracts a player life and checks for game end.
+     */
+    function handlePlayerDeath() {
+        player.setInitialPosition();
+        if (player.lives > 0)
+            player.deductLife();
+
+        if (player.lives === 0)
+            showModal('Oh no :( You lost all your lives!');
+    }
+
+    function updateScore() {
+        const scorePoints = document.querySelector('#scorePoints');
+        scorePoints.innerHTML = player.score;
+        if (player.score >= 1200) {
+            showModal('Congratulations, you won!!');
+            player.setInitialPosition();
         }
     }
+
+    function resetGame() {
+        player.lives = 3;
+        player.score = 0;
+        playerLives.forEach(function (life) {
+            life.style.visibility = 'visible';
+        });
+        updateScore();
+        // This causes the player to reappear (it was hidden when the game ended)
+        selectCharacter(selectedCharacterIndex);
+    }
+
+    function showModal(message) {
+        const gameOverModal = document.querySelector('.game-over-modal-container');
+        const gameOverContent = document.querySelector('.game-over-modal-content');
+        gameOverContent.firstElementChild.innerHTML = message;
+        gameOverModal.style.display = 'block';
+        player.sprite = null;
+        
+
+    }
+    const replayButton = document.querySelector('.button');
+    replayButton.addEventListener('click', function () {
+        const gameOverModal = document.querySelector('.game-over-modal-container');
+        gameOverModal.style.display = 'none';
+        resetGame();
+    });
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -258,14 +254,6 @@ var Engine = (function(global) {
         });
 
         player.render();
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-   //noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to

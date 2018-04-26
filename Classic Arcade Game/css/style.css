@@ -19,13 +19,13 @@ body {
 }
 
 /*Game features: Score & Lives*/
-.game-features {
-    width:650px;
-    margin-bottom:-50px;
-    margin-left:33%;
-    display:flex;
-    justify-content:space-between;
 
+.game-features {
+    width: 650px;
+    margin-bottom: -50px;
+    margin-left: 33%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .player-lives img {
@@ -33,9 +33,8 @@ body {
 }
 
 /* Modal that appears on the start of the game */
-.gameStartModal-container {
-    /*Testing */
-    display:none;
+.game-start-modal-container {
+    display:block;
     position: fixed;
     z-index: 1;
     height: 100%;
@@ -43,55 +42,54 @@ body {
     background: url('../images/startGame-background.jpg') no-repeat 100% 100%;
 }
 
-.gameStartModal-content {
+.game-start-modal-content {
     background-color: rgba(0, 0, 0, 0.7);
     margin: 8% auto;
     padding: 0;
     width: 800px;
-    height: 500px;
+    height: 600px;
     box-shadow: 0 5px 8px rgba(0,0,0,0.2),0 7px 20px rgba(0,0,0,0.17);
 }
 
-.gameStartModal-content > h1 {
-    font-size:2em;
-    color:white;
-    padding-top:5%;
+.game-start-modal-content > h1 {
+    font-size: 2em;
+    color: #f2f2f2;
+    padding-top: 5%;
 }
 
-.gameStartModal-content > p {
+.game-start-modal-content > p {
     margin: 2% 8%;
-    font-size:1.1em;
-    color:white;
+    font-size: 1.1em;
+    color: #f2f2f2;
     line-height: 1.6;
 }
 
-.characterSelect-container {
+.character-select-container {
     height: 150px;
     width: 800px;
     position: relative;
 }
 
-.playerSprite {
-    position:relative;
-    z-index:2;
+.player-sprite {
+    position: relative;
+    z-index: 2;
 }
 
-.playerSelector {
-    position:absolute;
-    left:116px;
+.player-selector {
+    position: absolute;
+    left: 116px;
 }
 
 /* Modal that appears after the user has finished the game */
-.gameOverModal-container {
-    /*Left visible for testing purposes*/
-    display: block;
+.game-over-modal-container {
+    display: none;
     position: fixed;
     z-index: 1;
     height: 100%;
     width: 100%;
 }
 
-.gameOverModal-content {
+.game-over-modal-content {
     background-color: rgba(0, 0, 0, 0.7);
     margin: 14% auto;
     padding: 0;
@@ -100,19 +98,19 @@ body {
     box-shadow: 0 5px 8px rgba(0,0,0,0.2),0 7px 20px rgba(0,0,0,0.17);
 }
 
-.gameOverModal-content > h2 {
+.game-over-modal-content > h2 {
     padding: 12% 6%;
     font-size: 1.2em;
     line-height: 2.0;
     color: #f2f2f2;
-    opacity:0.9;
+    opacity: 0.9;
 }
 
-.gameOverModal-content footer {
+.game-over-modal-content footer {
     text-align: center;
 }
 
-.gameOverModal-content .button {
+.button {
     color: #fff;
     font-size: 1.1em;
     background: #4db559;
