@@ -12,7 +12,7 @@ class Enemy {
      * @param {Number} speed The speed of the enemy (150 is a slow enemy, 300 is a fast enemy)
      */
     constructor(x, y, speed) {
-        this.sprite = 'images/enemy-bug.png';
+        this.sprite = 'src/images/enemy-bug.png';
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -162,9 +162,9 @@ const allEnemies = [
 ];
 
 const allGems = [
-    new Gem('images/Gem Blue.png', 50),
-    new Gem('images/Gem Green.png', 100),
-    new Gem('images/Gem Orange.png', 150)
+    new Gem('src/images/Gem Blue.png', 50),
+    new Gem('src/images/Gem Green.png', 100),
+    new Gem('src/images/Gem Orange.png', 150)
 ];
 
 const allowedKeys = {
