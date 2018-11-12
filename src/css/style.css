@@ -23,8 +23,8 @@ body {
 
 .game-features {
     width: 650px;
+    margin: 0 auto;
     margin-bottom: -50px;
-    margin-left: 33%;
     display: flex;
     justify-content: space-between;
 }
