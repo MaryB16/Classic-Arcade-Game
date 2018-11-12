@@ -34,13 +34,14 @@ body {
 
 /* Modal that appears on the start of the game */
 .game-start-modal-container {
-    display:block;
-    position: fixed;
+    position:fixed;
     z-index: 1;
     height: 100%;
     width: 100%;
-    background: url('../images/startGame-background.jpg') no-repeat 100% 100%;
+    background: url('../images/startGame-background.jpg');
+    background-size:cover;
 }
+
 
 .game-start-modal-content {
     background-color: rgba(0, 0, 0, 0.7);
